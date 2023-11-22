@@ -1,5 +1,5 @@
 # Use an official Python runtime as a parent image
-FROM python:3.10
+FROM python:3.11
 
 # Set a non-root user with a specific user ID
 # RUN adduser 10001
