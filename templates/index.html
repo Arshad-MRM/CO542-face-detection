@@ -3,103 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cats & Dogs</title>
+    <title>Image Upload Template</title>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
-            height: 100vh;
-        }
-
-        header {
-            background-color: #343a40;
-            color: #ffffff;
-            text-align: center;
-            padding: 15px 0;
-            border-radius: 10px 10px 0 0;
-            width: 100%;
-        }
-
-        .container {
-            background-color: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin: 20px;
-            width: 80%;
-            max-width: 400px; /* Adjust as needed */
-        }
-
-        h1 {
-            margin-bottom: 20px;
-        }
-
-        form {
-            display: flex;
-            flex-direction: column;
             align-items: center;
-            margin-top: 20px;
+            height: 100vh;
+            background-color: #f5f5f5;
+        }
+
+        .upload-container {
+            text-align: center;
+            padding: 20px;
+            border: 2px dashed #ccc;
+            background-color: #fff;
+            border-radius: 10px;
+            width: 300px;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            color: #aaa;
+        }
+
+        .upload-text {
+            margin-top: 10px;
+            color: #555;
         }
 
         input[type="file"] {
-            margin-bottom: 10px;
+            display: none;
         }
 
-        input[type="submit"] {
-            background-color: #28a745;
-            color: white;
-            border: none;
+        label {
+            display: block;
+            margin-top: 10px;
             padding: 10px 15px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
+            background-color: #3498db;
+            color: #fff;
             cursor: pointer;
             border-radius: 5px;
-            transition: background-color 0.3s ease;
         }
 
-        input[type="submit"]:hover {
-            background-color: #218838;
+        #submitBtn {
+            margin-top: 15px;
+            padding: 10px 15px;
+            background-color: #2ecc71;
+            color: #fff;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
         }
 
-        h2 {
-            color: #28a745;
-            margin-top: 20px;
-        }
-
-        img {
-            margin-top: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            padding: 5px;
-            width: 100%;
-            max-width: 300px;
-        }
-
-        @media (max-width: 600px) {
-            .container {
-                width: 90%;
-            }
+        #selectedImage {
+            margin-top: 15px;
+            color: #555;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Cats & Dogs</h1>
-        </header>
-
-        <form action="/predict" method="POST" enctype="multipart/form-data">
-            <input type="file" name="img">
-            <input type="submit" value="Predict">
+    <div class="upload-container">
+        <div class="upload-icon">&#x1F4F7;</div>
+        <div class="upload-text">Drag and drop or click to select an image</div>
+        <form id="uploadForm">
+            <input type="file" id="imageInput" accept="image/*">
+            <label for="imageInput">Choose Image</label>
+            <div id="selectedImage">No image selected</div>
+            <button type="button" id="submitBtn">Submit</button>
         </form>
     </div>
+
+    <script>
+        document.getElementById('imageInput').addEventListener('change', function() {
+            var fileInput = this;
+            var selectedImage = document.getElementById('selectedImage');
+
+            if (fileInput.files.length > 0) {
+                selectedImage.textContent = 'Selected Image: ' + fileInput.files[0].name;
+            } else {
+                selectedImage.textContent = 'No image selected';
+            }
+        });
+
+        document.getElementById('submitBtn').addEventListener('click', function() {
+            var fileInput = document.getElementById('imageInput');
+            var file = fileInput.files[0];
+
+            if (file) {
+                var formData = new FormData();
+                formData.append('image', file);
+
+                // Replace 'YOUR_API_ENDPOINT' with the actual API endpoint
+                var apiUrl = 'http://127.0.0.1:5000/upload';
+
+                fetch(apiUrl, {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.text())  // Change to text() to get HTML content
+                .then(htmlData => {
+                    // Assuming the API returns HTML content
+                    document.open();
+                    document.write(htmlData);
+                    document.close();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // Handle error
+                });
+            } else {
+                alert('Please select an image first.');
+            }
+        });
+    </script>
 </body>
 </html>
