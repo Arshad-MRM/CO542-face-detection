@@ -14,7 +14,7 @@ model = pickle.load(open('models/cats_and_dogs.pkl','rb'))
 
 @app.route('/')
 def home():
-    return render_template("index.html")
+    return 'Hello World, server is working'
 
 @app.route('/predict', methods=['POST'])
 def predict():
