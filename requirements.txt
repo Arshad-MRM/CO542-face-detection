@@ -1,4 +1,4 @@
-Flask==3.0.0
+Flask
 Matplotlib==3.8.2
 NumPy
 TensorFlow==2.13.1
