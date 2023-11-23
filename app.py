@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route('/') 
 def index(): 
-   return "Server is working"
+    return "Server is working"
    # return render_template('index.html') 
 
 @app.route('/upload', methods=['POST'])
@@ -28,4 +28,4 @@ def upload():
     return render_template('output.html', emotion_weights=emotion_weights, filename=image.filename)
 
 if __name__ == '__main__':
-   app.run(host='0.0.0.0', debug=True)
+    app.run(host='0.0.0.0', debug=True)
